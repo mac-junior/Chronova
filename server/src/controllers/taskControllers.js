@@ -192,7 +192,7 @@ export const deleteTask = async (req, res) => {
             });
         }
 
-        await task.deletOne();
+        await task.deleteOne();
 
         res.status(200).json({
             success: true,
@@ -207,5 +207,29 @@ export const deleteTask = async (req, res) => {
             message: "Server Error"
         });
         
+    }
+}
+
+
+export const deleteAllTasks = async (req, res) => {
+    try {
+        // Delete ALL tasks belonging to the logged-in user
+        const result = await Task.deleteMany({
+            user: req.user._id,
+        });
+
+        res.status(200).json({
+            success: true,
+            message: "All tasks deleted successfully",
+            deletedCount: result.deletedCount,
+        });
+
+    } catch (error) {
+        console.error("Unexpected errror:", error);
+
+        res.status(500).json({
+            success: false,
+            message: "Server Error"
+        });
     }
 }
