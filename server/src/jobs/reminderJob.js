@@ -1,116 +1,73 @@
 import cron from "node-cron";
-
 import Task from "../models/Task.js";
-import User from "../models/User.js";
-
 import sendEmail from "../utils/sendEmail.js";
 
 // ===========================================
-// REMINDER CRON JOB (DEV MODE)
+// REMINDER CRON JOB
 // ===========================================
 
 const startReminderJob = () => {
+  // Runs every minute (more realistic than every few seconds)
+  cron.schedule("*/1 * * * *", async () => {
+    try {
+      const now = new Date();
 
-    // Runs every 5 seconds
-    cron.schedule("*/5 * * * * *", async () => {
+      // Small buffer window to avoid missing tasks due to cron timing
+      const nextMinute = new Date(now.getTime() + 60 * 1000);
 
-        // console.log("Checking reminders...");
+      const upcomingTasks = await Task.find({
+        dueDate: {
+          $gte: now,
+          $lte: nextMinute,
+        },
+        completed: false,
+        reminderSent: false,
+      }).populate("user");
 
-        try {
+      if (!upcomingTasks.length) return;
 
-            const now = new Date();
+      for (const task of upcomingTasks) {
+        if (!task.user?.email) continue;
 
-            // 30 seconds ahead (DEV TESTING)
-            const thirtySecondsLater = new Date(
-                now.getTime() + 30 * 1000
-            );
+        await sendEmail(
+          task.user.email,
+          `Reminder: ${task.title}`,
+          `
+          <div style="font-family: Arial; padding: 20px;">
+            <h2>Chronova Reminder</h2>
 
-            // Find Upcoming Tasks
-            const upcomingTasks = await Task.find({
-                dueDate: {
-                    $gte: now,
-                    $lte: thirtySecondsLater,
-                },
+            <p>Hello ${task.user.username || "there"},</p>
 
-                completed: false,
+            <p>This is a reminder for your task:</p>
 
-                reminderSent: false,
-            }).populate("user");
+            <h3>${task.title}</h3>
 
-            //  console.log(
-            //     `Found ${upcomingTasks.length} upcoming task(s)`
-            // );
+            <p>Scheduled for:</p>
 
-            // Loop Through Tasks
-            for (const task of upcomingTasks) {
+            <strong>
+              ${new Date(task.dueDate).toLocaleString()}
+            </strong>
 
-                const user = task.user;
+            <p>Stay productive!</p>
 
-                // Send Email
-                await sendEmail(
-                    user.email,
-                    `Reminder: ${task.title}`,
+            <hr />
 
-                    `
-                    <div style="
-                        font-family: Arial;
-                        padding: 20px;
-                    ">
+            <p>
+              Chronova<br />
+              Your Tasks. Your Time.
+            </p>
+          </div>
+          `
+        );
 
-                        <h2>Chronova Reminder</h2>
-
-                        <p>Hello ${user.username},</p>
-
-                        <p>
-                            This is a reminder that your task:
-                        </p>
-
-                        <h3>${task.title}</h3>
-
-                        <p>
-                            is scheduled for:
-                        </p>
-
-                        <strong>
-                            ${new Date(
-                                task.dueDate
-                            ).toLocaleString()}
-                        </strong>
-
-                        <p>
-                            Stay productive!
-                        </p>
-
-                        <hr />
-
-                        <p>
-                            Chronova
-                            <br />
-                            Your Tasks. Your Time.
-                        </p>
-
-                    </div>
-                    `
-                );
-
-                // Mark Reminder As Sent
-                task.reminderSent = true;
-
-                await task.save();
-
-                console.log(
-                    `Reminder sent for task: ${task.title}`
-                );
-            }
-
-        } catch (error) {
-
-            console.error(
-                "Reminder Job Error:",
-                error.message
-            );
-        }
-    });
+        task.reminderSent = true;
+        await task.save();
+      }
+    } catch (error) {
+      // In production we avoid console spam, but still keep error visibility
+      console.error("Reminder job failed");
+    }
+  });
 };
 
 export default startReminderJob;
