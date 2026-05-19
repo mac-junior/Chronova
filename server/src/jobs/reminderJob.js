@@ -14,7 +14,7 @@ const startReminderJob = () => {
     // Runs every 5 seconds
     cron.schedule("*/5 * * * * *", async () => {
 
-        console.log("Checking reminders...");
+        // console.log("Checking reminders...");
 
         try {
 
@@ -37,9 +37,9 @@ const startReminderJob = () => {
                 reminderSent: false,
             }).populate("user");
 
-            console.log(
-                `Found ${upcomingTasks.length} upcoming task(s)`
-            );
+            //  console.log(
+            //     `Found ${upcomingTasks.length} upcoming task(s)`
+            // );
 
             // Loop Through Tasks
             for (const task of upcomingTasks) {
