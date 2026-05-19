@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { toast } from "react-hot-toast";
+import { ErrorIcon, toast } from "react-hot-toast";
 import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip } from "recharts";
 import {
     LogOut, Plus, CheckCircle, Circle, Clock3, Trash2, Calendar, Clock,
@@ -129,7 +129,7 @@ const Dashboard = () => {
             setTasks([]);
             toast.success("All task logs cleared successfully.");
         } catch (error) {
-            toast.error("Failed to clear task logs.");
+            toast.error("Failed to clear task logs.", ErrorIcon);
         }
     };
 
@@ -265,7 +265,7 @@ const Dashboard = () => {
                                 <h1 className="text-sm font-semibold tracking-tight text-zinc-200">
                                     {greeting.text}, {user?.username || "Productive User"}
                                 </h1>
-                                <p className="text-xs text-zinc-500 font-medium hidden sm:block">Stay organized. Get things done.</p>
+                                <p className="text-xs text-zinc-500 font-medium">Stay organized. Get things done.</p>
                             </div>
                         </div>
                     </div>
