@@ -11,7 +11,7 @@ export const ProtectedRoute = () => {
     return (
       <div className="min-h-screen bg-zinc-950 flex flex-col items-center justify-center gap-3">
         <Loader2 className="w-8 h-8 text-indigo-500 animate-spin" />
-        <span className="text-sm text-zinc-500 tracking-wider">Syncing session state...</span>
+        <span className="text-sm text-zinc-500 tracking-wider">Organizing your tasks...</span>
       </div>
     );
   }

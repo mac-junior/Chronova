@@ -2,7 +2,7 @@ import express from "express";
 import {
     createTask,
     deleteTask,
-    getUserTask,
+    getUserTasks,
     toggleTaskCompletion,
     updateTask,
     deleteAllTasks
@@ -16,18 +16,18 @@ const router = express.Router();
 router.post("/", protect, createTask);
 
 // Get User Tasks
-router.get("/", protect, getUserTask);
+router.get("/", protect, getUserTasks);
 
-// Update Task
+// Update Task 
 router.put("/:id", protect, updateTask);
 
-// Toggle Completion
+// Toggle Completion 
 router.patch("/:id/toggle", protect, toggleTaskCompletion);
 
 // Delete single task
 router.delete("/:id", protect, deleteTask);
 
 // Delete ALL tasks
-router.delete("/", protect, deleteAllTasks);
+router.delete("/delete/all", protect, deleteAllTasks);
 
 export default router;
