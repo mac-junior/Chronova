@@ -30,7 +30,10 @@ app.use(cookieParser());
 // CORS
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin:[ 
+      "http://localost:5173",
+      "https://chronova-beta.vercel.app"
+    ],
     credentials: true,
   })
 );
