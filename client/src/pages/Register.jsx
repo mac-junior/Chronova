@@ -80,7 +80,7 @@ const Register = () => {
                   type="text"
                   name="username"
                   required
-                  placeholder="john_doe"
+                  placeholder="Mac Junior"
                   value={formData.username}
                   onChange={handleChange}
                   className="w-full bg-zinc-950 border border-zinc-800 rounded-xl py-3 pl-10 pr-4 text-sm focus:outline-hidden focus:border-indigo-500 transition-all placeholder-zinc-600"
