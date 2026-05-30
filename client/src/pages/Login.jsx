@@ -78,7 +78,7 @@ const Login = () => {
           className="w-full max-w-md bg-zinc-900 border border-zinc-800 p-8 rounded-2xl shadow-xl"
         >
           <div className="mb-8">
-            <h2 className="text-2xl font-bold tracking-tight mb-2">Account Login</h2>
+            <h2 className="text-2xl font-bold tracking-tight mb-2">Chronova</h2>
             <p className="text-zinc-400 text-sm">Enter your credentials to manage active schedules.</p>
           </div>
 

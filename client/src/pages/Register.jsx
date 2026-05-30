@@ -67,8 +67,8 @@ const Register = () => {
           className="w-full max-w-md bg-zinc-900 border border-zinc-800 p-8 rounded-2xl shadow-xl"
         >
           <div className="mb-8">
-            <h2 className="text-2xl font-bold tracking-tight mb-2">Create an account</h2>
-            <p className="text-zinc-400 text-sm">Get started with your smart dashboard today.</p>
+            <h2 className="text-2xl font-bold tracking-tight mb-2">Chronova</h2>
+            <p className="text-zinc-400 text-sm">Your Tasks. Your Time</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
